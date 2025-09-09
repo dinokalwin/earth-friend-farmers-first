@@ -4,9 +4,11 @@ import { SoilDataForm } from "@/components/SoilDataForm";
 import { Dashboard } from "@/components/Dashboard";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { RecommendationsPanel } from "@/components/RecommendationsPanel";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Leaf, BarChart3, Lightbulb, Cloud } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export interface SoilData {
   id: string;
@@ -25,6 +27,7 @@ export interface WeatherData {
 }
 
 const Index = () => {
+  const { language, t, switchLanguage } = useLanguage();
   const [soilData, setSoilData] = useState<SoilData[]>([]);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -46,11 +49,11 @@ const Index = () => {
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      toast.success("Connection restored");
+      toast.success(t.messages.connectionRestored);
     };
     const handleOffline = () => {
       setIsOnline(false);
-      toast.info("Working offline - data will sync when connected");
+      toast.info(t.messages.workingOffline);
     };
 
     window.addEventListener('online', handleOnline);
@@ -70,7 +73,7 @@ const Index = () => {
     };
     
     setSoilData(prev => [soilEntry, ...prev]);
-    toast.success("Soil data recorded successfully!");
+    toast.success(t.messages.dataRecorded);
   };
 
   const getLatestSoilData = (): SoilData | null => {
@@ -84,11 +87,16 @@ const Index = () => {
         <div className="flex items-center justify-between max-w-md mx-auto">
           <div className="flex items-center gap-2">
             <Leaf className="h-6 w-6" />
-            <h1 className="text-lg font-bold">Smart Soil Monitor</h1>
+            <h1 className="text-lg font-bold">{t.header.title}</h1>
           </div>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher 
+              currentLanguage={language}
+              onLanguageChange={switchLanguage}
+              label={t.common.language}
+            />
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-red-400'}`} />
-            <span className="text-sm">{isOnline ? 'Online' : 'Offline'}</span>
+            <span className="text-sm">{isOnline ? t.header.online : t.header.offline}</span>
           </div>
         </div>
       </header>
@@ -99,32 +107,32 @@ const Index = () => {
           <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="input" className="flex flex-col gap-1 py-3">
               <Leaf className="h-4 w-4" />
-              <span className="text-xs">Input</span>
+              <span className="text-xs">{t.tabs.input}</span>
             </TabsTrigger>
             <TabsTrigger value="dashboard" className="flex flex-col gap-1 py-3">
               <BarChart3 className="h-4 w-4" />
-              <span className="text-xs">Data</span>
+              <span className="text-xs">{t.tabs.data}</span>
             </TabsTrigger>
             <TabsTrigger value="recommendations" className="flex flex-col gap-1 py-3">
               <Lightbulb className="h-4 w-4" />
-              <span className="text-xs">Tips</span>
+              <span className="text-xs">{t.tabs.tips}</span>
             </TabsTrigger>
             <TabsTrigger value="weather" className="flex flex-col gap-1 py-3">
               <Cloud className="h-4 w-4" />
-              <span className="text-xs">Weather</span>
+              <span className="text-xs">{t.tabs.weather}</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="input">
-            <SoilDataForm onSubmit={handleAddSoilData} />
+            <SoilDataForm onSubmit={handleAddSoilData} t={t} />
           </TabsContent>
 
           <TabsContent value="dashboard">
-            <Dashboard soilData={soilData} />
+            <Dashboard soilData={soilData} t={t} />
           </TabsContent>
 
           <TabsContent value="recommendations">
-            <RecommendationsPanel latestSoilData={getLatestSoilData()} />
+            <RecommendationsPanel latestSoilData={getLatestSoilData()} t={t} />
           </TabsContent>
 
           <TabsContent value="weather">
@@ -132,6 +140,7 @@ const Index = () => {
               weatherData={weatherData} 
               onWeatherUpdate={setWeatherData}
               isOnline={isOnline}
+              t={t}
             />
           </TabsContent>
         </Tabs>

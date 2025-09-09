@@ -3,22 +3,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Calendar, Activity } from "lucide-react";
 import type { SoilData } from "@/pages/Index";
+import type { Translations } from "@/lib/translations";
 
 interface DashboardProps {
   soilData: SoilData[];
+  t: Translations;
 }
 
-export const Dashboard = ({ soilData }: DashboardProps) => {
+export const Dashboard = ({ soilData, t }: DashboardProps) => {
   if (soilData.length === 0) {
     return (
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
-            Soil Health Dashboard
+            {t.dashboard.title}
           </CardTitle>
           <CardDescription>
-            No data recorded yet. Start by adding your first soil measurement.
+            {t.dashboard.noData}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -48,10 +50,10 @@ export const Dashboard = ({ soilData }: DashboardProps) => {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5" />
-            Soil Health Dashboard
-          </CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Activity className="h-5 w-5" />
+          {t.dashboard.title}
+        </CardTitle>
           <CardDescription>
             {soilData.length} readings recorded
           </CardDescription>
@@ -63,21 +65,21 @@ export const Dashboard = ({ soilData }: DashboardProps) => {
         <Card className="p-3">
           <div className="text-center">
             <div className="text-2xl font-bold text-yellow-600">{latestData.nitrogen}%</div>
-            <div className="text-xs text-muted-foreground">Nitrogen</div>
+            <div className="text-xs text-muted-foreground">{t.dashboard.nitrogen}</div>
             <div className="text-xs">Avg: {averages.nitrogen}%</div>
           </div>
         </Card>
         <Card className="p-3">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{latestData.ph}</div>
-            <div className="text-xs text-muted-foreground">pH Level</div>
+            <div className="text-xs text-muted-foreground">{t.dashboard.ph}</div>
             <div className="text-xs">Avg: {averages.ph}</div>
           </div>
         </Card>
         <Card className="p-3">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-500">{latestData.moisture}%</div>
-            <div className="text-xs text-muted-foreground">Moisture</div>
+            <div className="text-xs text-muted-foreground">{t.dashboard.moisture}</div>
             <div className="text-xs">Avg: {averages.moisture}%</div>
           </div>
         </Card>
@@ -124,7 +126,7 @@ export const Dashboard = ({ soilData }: DashboardProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Calendar className="h-4 w-4" />
-            Recent Readings
+            {t.dashboard.recentReadings}
           </CardTitle>
         </CardHeader>
         <CardContent>

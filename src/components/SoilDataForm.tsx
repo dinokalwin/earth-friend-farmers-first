@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Droplets, Zap, TestTube } from "lucide-react";
 import type { SoilData } from "@/pages/Index";
+import type { Translations } from "@/lib/translations";
 
 interface SoilDataFormProps {
   onSubmit: (data: Omit<SoilData, 'id' | 'date'>) => void;
+  t: Translations;
 }
 
-export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
+export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
   const [formData, setFormData] = useState({
     nitrogen: '',
     ph: '',
@@ -59,10 +61,10 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TestTube className="h-5 w-5" />
-          Record Soil Data
+          {t.soilForm.title}
         </CardTitle>
         <CardDescription>
-          Enter your soil measurements to track health over time
+          {t.soilForm.nitrogenHelper}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -70,7 +72,7 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="nitrogen" className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-yellow-500" />
-              Nitrogen Level (%)
+              {t.soilForm.nitrogen}
             </Label>
             <Input
               id="nitrogen"
@@ -88,7 +90,7 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="ph" className="flex items-center gap-2">
               <TestTube className="h-4 w-4 text-blue-500" />
-              pH Level
+              {t.soilForm.ph}
             </Label>
             <Input
               id="ph"
@@ -106,7 +108,7 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
           <div className="space-y-2">
             <Label htmlFor="moisture" className="flex items-center gap-2">
               <Droplets className="h-4 w-4 text-blue-600" />
-              Moisture Level (%)
+              {t.soilForm.moisture}
             </Label>
             <Input
               id="moisture"
@@ -122,10 +124,10 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (Optional)</Label>
+            <Label htmlFor="notes">{t.soilForm.notes}</Label>
             <Textarea
               id="notes"
-              placeholder="Any observations about your field..."
+              placeholder={t.soilForm.notes}
               value={formData.notes}
               onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
             />
@@ -136,7 +138,7 @@ export const SoilDataForm = ({ onSubmit }: SoilDataFormProps) => {
             className="w-full" 
             disabled={!isValid}
           >
-            Record Soil Data
+            {t.soilForm.submit}
           </Button>
         </form>
       </CardContent>

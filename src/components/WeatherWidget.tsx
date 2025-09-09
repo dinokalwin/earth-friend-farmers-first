@@ -7,14 +7,16 @@ import { Label } from "@/components/ui/label";
 import { Cloud, Sun, CloudRain, MapPin, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import type { WeatherData } from "@/pages/Index";
+import type { Translations } from "@/lib/translations";
 
 interface WeatherWidgetProps {
   weatherData: WeatherData | null;
   onWeatherUpdate: (data: WeatherData | null) => void;
   isOnline: boolean;
+  t: Translations;
 }
 
-export const WeatherWidget = ({ weatherData, onWeatherUpdate, isOnline }: WeatherWidgetProps) => {
+export const WeatherWidget = ({ weatherData, onWeatherUpdate, isOnline, t }: WeatherWidgetProps) => {
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -84,10 +86,10 @@ export const WeatherWidget = ({ weatherData, onWeatherUpdate, isOnline }: Weathe
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Cloud className="h-5 w-5" />
-            Weather Conditions
-          </CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Cloud className="h-5 w-5" />
+          {t.weather.title}
+        </CardTitle>
           <CardDescription>
             Current weather to help plan your farming activities
           </CardDescription>
@@ -120,7 +122,7 @@ export const WeatherWidget = ({ weatherData, onWeatherUpdate, isOnline }: Weathe
 
           {!isOnline && (
             <div className="mt-3 p-3 bg-muted/50 rounded text-sm text-muted-foreground">
-              Weather data requires internet connection
+              {t.weather.noData}
             </div>
           )}
         </CardContent>
@@ -142,7 +144,7 @@ export const WeatherWidget = ({ weatherData, onWeatherUpdate, isOnline }: Weathe
               </div>
               <div className="text-right">
                 <div className="text-lg font-semibold">{weatherData.humidity}%</div>
-                <div className="text-sm text-muted-foreground">Humidity</div>
+                <div className="text-sm text-muted-foreground">{t.weather.humidity}</div>
               </div>
             </div>
             

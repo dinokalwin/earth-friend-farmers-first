@@ -3,23 +3,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, AlertTriangle, CheckCircle, Leaf } from "lucide-react";
 import type { SoilData } from "@/pages/Index";
+import type { Translations } from "@/lib/translations";
 
 interface RecommendationsPanelProps {
   latestSoilData: SoilData | null;
+  t: Translations;
 }
 
-export const RecommendationsPanel = ({ latestSoilData }: RecommendationsPanelProps) => {
+export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanelProps) => {
   if (!latestSoilData) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5" />
-            AI Recommendations
-          </CardTitle>
-          <CardDescription>
-            Record soil data to get personalized fertilizer and care recommendations.
-          </CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <Lightbulb className="h-5 w-5" />
+          {t.recommendations.title}
+        </CardTitle>
+        <CardDescription>
+          {t.recommendations.noData}
+        </CardDescription>
         </CardHeader>
       </Card>
     );
@@ -103,10 +105,10 @@ export const RecommendationsPanel = ({ latestSoilData }: RecommendationsPanelPro
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5" />
-            AI Recommendations
-          </CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Lightbulb className="h-5 w-5" />
+          {t.recommendations.title}
+        </CardTitle>
           <CardDescription>
             Based on your latest soil readings
           </CardDescription>
