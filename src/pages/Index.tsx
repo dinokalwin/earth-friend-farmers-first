@@ -4,9 +4,10 @@ import { SoilDataForm } from "@/components/SoilDataForm";
 import { Dashboard } from "@/components/Dashboard";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { RecommendationsPanel } from "@/components/RecommendationsPanel";
+import { ReportGenerator } from "@/components/ReportGenerator";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Leaf, BarChart3, Lightbulb, Cloud } from "lucide-react";
+import { Leaf, BarChart3, Lightbulb, Cloud, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -104,7 +105,7 @@ const Index = () => {
       {/* Main Content */}
       <main className="max-w-md mx-auto p-4">
         <Tabs defaultValue="input" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
+          <TabsList className="grid w-full grid-cols-5 mb-6">
             <TabsTrigger value="input" className="flex flex-col gap-1 py-3">
               <Leaf className="h-4 w-4" />
               <span className="text-xs">{t.tabs.input}</span>
@@ -120,6 +121,10 @@ const Index = () => {
             <TabsTrigger value="weather" className="flex flex-col gap-1 py-3">
               <Cloud className="h-4 w-4" />
               <span className="text-xs">{t.tabs.weather}</span>
+            </TabsTrigger>
+            <TabsTrigger value="report" className="flex flex-col gap-1 py-3">
+              <FileText className="h-4 w-4" />
+              <span className="text-xs">{t.tabs.report}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -142,6 +147,10 @@ const Index = () => {
               isOnline={isOnline}
               t={t}
             />
+          </TabsContent>
+
+          <TabsContent value="report">
+            <ReportGenerator soilData={soilData} t={t} />
           </TabsContent>
         </Tabs>
       </main>
