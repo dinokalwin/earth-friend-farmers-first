@@ -11,7 +11,6 @@ export interface Translations {
     data: string;
     tips: string;
     weather: string;
-    report: string;
   };
   soilForm: {
     title: string;
@@ -46,14 +45,6 @@ export interface Translations {
     humidity: string;
     getWeather: string;
   };
-  report: {
-    title: string;
-    generate: string;
-    download: string;
-    noData: string;
-    contents: string;
-    description: string;
-  };
   common: {
     loading: string;
     error: string;
@@ -79,7 +70,6 @@ export const translations: Record<Language, Translations> = {
       data: 'Data',
       tips: 'Tips',
       weather: 'Weather',
-      report: 'Report',
     },
     soilForm: {
       title: 'Record Soil Data',
@@ -114,14 +104,6 @@ export const translations: Record<Language, Translations> = {
       humidity: 'Humidity',
       getWeather: 'Get Current Weather',
     },
-    report: {
-      title: 'Generate Report',
-      generate: 'Generate PDF Report',
-      download: 'Download PDF',
-      noData: 'No data available for report generation.',
-      contents: 'Report Contents',
-      description: 'Download a comprehensive PDF report of your soil health data',
-    },
     common: {
       loading: 'Loading...',
       error: 'Error',
@@ -145,7 +127,6 @@ export const translations: Record<Language, Translations> = {
       data: 'தரவு',
       tips: 'குறிப்புகள்',
       weather: 'வானிலை',
-      report: 'அறிக்கை',
     },
     soilForm: {
       title: 'மண் தரவு பதிவு',
@@ -179,14 +160,6 @@ export const translations: Record<Language, Translations> = {
       temperature: 'வெப்பநிலை',
       humidity: 'ஈரப்பதம்',
       getWeather: 'தற்போதைய வானிலையைப் பெறுங்கள்',
-    },
-    report: {
-      title: 'அறிக்கை உருவாக்கு',
-      generate: 'PDF அறிக்கை உருவாக்கு',
-      download: 'PDF பதிவிறக்கு',
-      noData: 'அறிக்கை உருவாக்க தரவு கிடைக்கவில்லை.',
-      contents: 'அறிக்கை உள்ளடக்கங்கள்',
-      description: 'உங்கள் மண் சுகாதார தரவின் விரிவான PDF அறிக்கையைப் பதிவிறக்கவும்',
     },
     common: {
       loading: 'ஏற்றுகிறது...',
