@@ -18,7 +18,8 @@ export interface Translations {
     nitrogen: string;
     ph: string;
     moisture: string;
-    notes: string;
+    plant: string;
+    plantPlaceholder: string;
     submit: string;
     nitrogenHelper: string;
     phHelper: string;
@@ -65,6 +66,18 @@ export interface Translations {
     connectionRestored: string;
     workingOffline: string;
   };
+  plants: {
+    rice: string;
+    wheat: string;
+    corn: string;
+    tomato: string;
+    potato: string;
+    cotton: string;
+    sugarcane: string;
+    beans: string;
+    spinach: string;
+    cabbage: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -86,7 +99,8 @@ export const translations: Record<Language, Translations> = {
       nitrogen: 'Nitrogen Level',
       ph: 'pH Level',
       moisture: 'Moisture Content',
-      notes: 'Notes (Optional)',
+      plant: 'Plant/Crop',
+      plantPlaceholder: 'Select your plant',
       submit: 'Record Data',
       nitrogenHelper: 'Enter nitrogen level (0-100 ppm)',
       phHelper: 'Enter pH level (0-14)',
@@ -133,6 +147,18 @@ export const translations: Record<Language, Translations> = {
       connectionRestored: 'Connection restored',
       workingOffline: 'Working offline - data will sync when connected',
     },
+    plants: {
+      rice: 'Rice',
+      wheat: 'Wheat',
+      corn: 'Corn/Maize',
+      tomato: 'Tomato',
+      potato: 'Potato',
+      cotton: 'Cotton',
+      sugarcane: 'Sugarcane',
+      beans: 'Beans',
+      spinach: 'Spinach',
+      cabbage: 'Cabbage',
+    },
   },
   ta: {
     header: {
@@ -152,7 +178,8 @@ export const translations: Record<Language, Translations> = {
       nitrogen: 'நைட்ரஜன் அளவு',
       ph: 'பிஎச் அளவு',
       moisture: 'ஈரப்பதம்',
-      notes: 'குறிப்புகள் (விருப்பமானது)',
+      plant: 'செடி/பயிர்',
+      plantPlaceholder: 'உங்கள் செடியை தேர்ந்தெடுக்கவும்',
       submit: 'தரவு பதிவு செய்',
       nitrogenHelper: 'நைட்ரஜன் அளவை உள்ளிடவும் (0-100 ppm)',
       phHelper: 'பிஎச் அளவை உள்ளிடவும் (0-14)',
@@ -198,6 +225,18 @@ export const translations: Record<Language, Translations> = {
       dataRecorded: 'மண் தரவு வெற்றிகரமாக பதிவு செய்யப்பட்டது!',
       connectionRestored: 'இணைப்பு மீட்டமைக்கப்பட்டது',
       workingOffline: 'ஆஃப்லைனில் வேலை செய்கிறது - இணைக்கப்படும் போது தரவு ஒத்திசைக்கப்படும்',
+    },
+    plants: {
+      rice: 'அரிசி',
+      wheat: 'கோதுமை',
+      corn: 'சோளம்',
+      tomato: 'தக்காளி',
+      potato: 'உருளைக்கிழங்கு',
+      cotton: 'பருத்தி',
+      sugarcane: 'கரும்பு',
+      beans: 'பீன்ஸ்',
+      spinach: 'கீரை',
+      cabbage: 'முட்டைகோஸ்',
     },
   },
 };

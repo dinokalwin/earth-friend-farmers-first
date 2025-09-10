@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Droplets, Zap, TestTube } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Droplets, Zap, TestTube, Sprout } from "lucide-react";
 import type { SoilData } from "@/pages/Index";
 import type { Translations } from "@/lib/translations";
 
@@ -19,7 +19,7 @@ export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
     nitrogen: '',
     ph: '',
     moisture: '',
-    notes: ''
+    plant: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -30,7 +30,7 @@ export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
     const moisture = parseFloat(formData.moisture);
 
     // Basic validation
-    if (isNaN(nitrogen) || isNaN(ph) || isNaN(moisture)) {
+    if (isNaN(nitrogen) || isNaN(ph) || isNaN(moisture) || !formData.plant) {
       return;
     }
 
@@ -42,7 +42,7 @@ export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
       nitrogen,
       ph,
       moisture,
-      notes: formData.notes.trim()
+      plant: formData.plant
     });
 
     // Reset form
@@ -50,11 +50,11 @@ export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
       nitrogen: '',
       ph: '',
       moisture: '',
-      notes: ''
+      plant: ''
     });
   };
 
-  const isValid = formData.nitrogen && formData.ph && formData.moisture;
+  const isValid = formData.nitrogen && formData.ph && formData.moisture && formData.plant;
 
   return (
     <Card>
@@ -124,13 +124,27 @@ export const SoilDataForm = ({ onSubmit, t }: SoilDataFormProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">{t.soilForm.notes}</Label>
-            <Textarea
-              id="notes"
-              placeholder={t.soilForm.notes}
-              value={formData.notes}
-              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-            />
+            <Label htmlFor="plant" className="flex items-center gap-2">
+              <Sprout className="h-4 w-4 text-green-500" />
+              {t.soilForm.plant}
+            </Label>
+            <Select value={formData.plant} onValueChange={(value) => setFormData(prev => ({ ...prev, plant: value }))}>
+              <SelectTrigger className="text-lg">
+                <SelectValue placeholder={t.soilForm.plantPlaceholder} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="rice">{t.plants.rice}</SelectItem>
+                <SelectItem value="wheat">{t.plants.wheat}</SelectItem>
+                <SelectItem value="corn">{t.plants.corn}</SelectItem>
+                <SelectItem value="tomato">{t.plants.tomato}</SelectItem>
+                <SelectItem value="potato">{t.plants.potato}</SelectItem>
+                <SelectItem value="cotton">{t.plants.cotton}</SelectItem>
+                <SelectItem value="sugarcane">{t.plants.sugarcane}</SelectItem>
+                <SelectItem value="beans">{t.plants.beans}</SelectItem>
+                <SelectItem value="spinach">{t.plants.spinach}</SelectItem>
+                <SelectItem value="cabbage">{t.plants.cabbage}</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <Button 

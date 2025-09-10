@@ -17,7 +17,7 @@ export interface SoilData {
   nitrogen: number;
   ph: number;
   moisture: number;
-  notes?: string;
+  plant: string;
 }
 
 export interface WeatherData {

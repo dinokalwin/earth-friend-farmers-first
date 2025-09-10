@@ -58,10 +58,7 @@ export const ReportGenerator = ({ soilData, t }: ReportGeneratorProps) => {
       doc.text(`Nitrogen: ${latestReading.nitrogen}%`, 20, 145);
       doc.text(`pH Level: ${latestReading.ph}`, 20, 155);
       doc.text(`Moisture: ${latestReading.moisture}%`, 20, 165);
-      
-      if (latestReading.notes) {
-        doc.text(`Notes: ${latestReading.notes}`, 20, 175);
-      }
+      doc.text(`Plant/Crop: ${latestReading.plant}`, 20, 175);
       
       // Data Table
       const tableData = soilData.slice(0, 15).map(data => [
@@ -69,11 +66,11 @@ export const ReportGenerator = ({ soilData, t }: ReportGeneratorProps) => {
         `${data.nitrogen}%`,
         data.ph.toString(),
         `${data.moisture}%`,
-        data.notes || 'N/A'
+        data.plant
       ]);
       
       autoTable(doc, {
-        head: [['Date', 'Nitrogen', 'pH', 'Moisture', 'Notes']],
+        head: [['Date', 'Nitrogen', 'pH', 'Moisture', 'Plant/Crop']],
         body: tableData,
         startY: 190,
         styles: { fontSize: 10 },
