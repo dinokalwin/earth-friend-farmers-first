@@ -53,7 +53,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
 
   // Nitrogen analysis
   if (nitrogen < requirements.nitrogen[0]) {
-    alerts.push(`Low nitrogen for ${plant}`);
+    alerts.push(`${t.recommendations.lowNitrogen} ${plant}`);
     recommendations.push({
       title: "Nitrogen Deficiency",
       description: `Apply nitrogen-rich fertilizer. ${plant} requires ${requirements.nitrogen[0]}-${requirements.nitrogen[1]}% nitrogen.`,
@@ -61,19 +61,19 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
     });
     fertilizers.push("Urea (46-0-0)", "Ammonium Sulfate (21-0-0)", "Calcium Ammonium Nitrate");
   } else if (nitrogen > requirements.nitrogen[1]) {
-    alerts.push(`Excess nitrogen for ${plant}`);
+    alerts.push(`${t.recommendations.excessNitrogen} ${plant}`);
     recommendations.push({
       title: "Excess Nitrogen",
       description: `Reduce nitrogen inputs. Consider flushing with water or adding carbon-rich materials.`,
       priority: "medium"
     });
   } else {
-    positives.push(`Nitrogen levels optimal for ${plant}`);
+    positives.push(`${t.recommendations.nitrogenOptimal} ${plant}`);
   }
 
   // pH analysis
   if (ph < requirements.ph[0]) {
-    alerts.push(`Soil too acidic for ${plant}`);
+    alerts.push(`${t.recommendations.soilAcidic} ${plant}`);
     recommendations.push({
       title: "Soil Too Acidic",
       description: `Add lime to raise pH to ${requirements.ph[0]}-${requirements.ph[1]} range for optimal ${plant} growth.`,
@@ -81,7 +81,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
     });
     fertilizers.push("Agricultural Lime", "Dolomitic Lime", "Wood Ash");
   } else if (ph > requirements.ph[1]) {
-    alerts.push(`Soil too alkaline for ${plant}`);
+    alerts.push(`${t.recommendations.soilAlkaline} ${plant}`);
     recommendations.push({
       title: "Soil Too Alkaline",
       description: `Add sulfur or organic matter to lower pH for ${plant}.`,
@@ -89,19 +89,19 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
     });
     fertilizers.push("Sulfur", "Peat Moss", "Compost");
   } else {
-    positives.push(`pH levels optimal for ${plant}`);
+    positives.push(`${t.recommendations.phOptimal} ${plant}`);
   }
 
   // Moisture analysis
   if (moisture < requirements.moisture[0]) {
-    alerts.push(`Insufficient moisture for ${plant}`);
+    alerts.push(`${t.recommendations.lowMoisture} ${plant}`);
     recommendations.push({
       title: "Insufficient Moisture",
       description: `Increase irrigation. ${plant} requires ${requirements.moisture[0]}-${requirements.moisture[1]}% moisture.`,
       priority: "high"
     });
   } else if (moisture > requirements.moisture[1]) {
-    alerts.push(`Excessive moisture for ${plant}`);
+    alerts.push(`${t.recommendations.excessMoisture} ${plant}`);
     recommendations.push({
       title: "Overwatering Risk",
       description: `Reduce watering to prevent root rot and fungal diseases in ${plant}.`,
@@ -109,7 +109,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
     });
     pesticides.push("Copper Fungicide", "Mancozeb", "Proper drainage system");
   } else {
-    positives.push(`Moisture levels optimal for ${plant}`);
+    positives.push(`${t.recommendations.moistureOptimal} ${plant}`);
   }
 
   // Plant-specific fertilizer recommendations
@@ -152,7 +152,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
           {t.recommendations.title}
         </CardTitle>
           <CardDescription>
-            Recommendations for {plant} cultivation
+            {`${t.recommendations.basedOnLatest} - ${plant}`}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -160,7 +160,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
       {/* Status Overview */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Soil Health Status for {plant}</CardTitle>
+          <CardTitle className="text-base">{t.recommendations.soilHealthStatus} {plant}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -205,7 +205,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Beaker className="h-4 w-4" />
-              Recommended Fertilizers for {plant}
+              {t.recommendations.recommendedFertilizers} {plant}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -226,7 +226,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Bug className="h-4 w-4" />
-              Pest Management for {plant}
+              {t.recommendations.pestManagement} {plant}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -244,7 +244,7 @@ export const RecommendationsPanel = ({ latestSoilData, t }: RecommendationsPanel
       {/* General Tips */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">General Tips for {plant}</CardTitle>
+          <CardTitle className="text-base">{t.recommendations.generalTips} {plant}</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="text-sm space-y-1 text-muted-foreground">
