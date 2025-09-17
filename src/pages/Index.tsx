@@ -1,15 +1,16 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SoilDataForm } from "@/components/SoilDataForm";
-import { Dashboard } from "@/components/Dashboard";
+import { LocationManager } from "@/components/LocationManager";
+import { EnhancedSoilDataForm } from "@/components/EnhancedSoilDataForm";
+import { EnhancedDashboard } from "@/components/EnhancedDashboard";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { RecommendationsPanel } from "@/components/RecommendationsPanel";
 import { ReportGenerator } from "@/components/ReportGenerator";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Leaf, BarChart3, Lightbulb, Cloud, FileText, LogOut } from "lucide-react";
+import { Leaf, BarChart3, Lightbulb, Cloud, FileText, LogOut, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useAuth } from "@/hooks/useAuth";
@@ -37,6 +38,8 @@ const Index = () => {
   const [soilData, setSoilData] = useState<SoilData[]>([]);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [selectedLocationId, setSelectedLocationId] = useState<string>('');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Redirect to auth if not logged in
   useEffect(() => {
@@ -78,14 +81,8 @@ const Index = () => {
     };
   }, []);
 
-  const handleAddSoilData = (newData: Omit<SoilData, 'id' | 'date'>) => {
-    const soilEntry: SoilData = {
-      ...newData,
-      id: Date.now().toString(),
-      date: new Date().toISOString()
-    };
-    
-    setSoilData(prev => [soilEntry, ...prev]);
+  const handleDataAdded = () => {
+    setRefreshTrigger(prev => prev + 1);
     toast.success(t.messages.dataRecorded);
   };
 
@@ -146,8 +143,12 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="max-w-md mx-auto p-4">
-        <Tabs defaultValue="input" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
+        <Tabs defaultValue="locations" className="w-full">
+          <TabsList className="grid w-full grid-cols-6 mb-6">
+            <TabsTrigger value="locations" className="flex flex-col gap-1 py-3">
+              <MapPin className="h-4 w-4" />
+              <span className="text-xs">Locations</span>
+            </TabsTrigger>
             <TabsTrigger value="input" className="flex flex-col gap-1 py-3">
               <Leaf className="h-4 w-4" />
               <span className="text-xs">{t.tabs.input}</span>
@@ -170,12 +171,25 @@ const Index = () => {
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="locations">
+            <LocationManager 
+              onLocationSelect={setSelectedLocationId}
+              selectedLocationId={selectedLocationId}
+            />
+          </TabsContent>
+
           <TabsContent value="input">
-            <SoilDataForm onSubmit={handleAddSoilData} t={t} />
+            <EnhancedSoilDataForm 
+              selectedLocationId={selectedLocationId}
+              onDataAdded={handleDataAdded}
+            />
           </TabsContent>
 
           <TabsContent value="dashboard">
-            <Dashboard soilData={soilData} t={t} />
+            <EnhancedDashboard 
+              selectedLocationId={selectedLocationId}
+              key={refreshTrigger}
+            />
           </TabsContent>
 
           <TabsContent value="recommendations">

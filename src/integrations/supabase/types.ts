@@ -14,13 +14,160 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      aggregated_data: {
+        Row: {
+          aggregation_type: string
+          avg_moisture: number
+          avg_nitrogen: number
+          avg_ph: number
+          avg_temperature: number | null
+          created_at: string
+          id: string
+          max_moisture: number | null
+          max_nitrogen: number | null
+          max_ph: number | null
+          min_moisture: number | null
+          min_nitrogen: number | null
+          min_ph: number | null
+          period_end: string
+          period_start: string
+          total_readings: number
+          user_id: string
+        }
+        Insert: {
+          aggregation_type: string
+          avg_moisture: number
+          avg_nitrogen: number
+          avg_ph: number
+          avg_temperature?: number | null
+          created_at?: string
+          id?: string
+          max_moisture?: number | null
+          max_nitrogen?: number | null
+          max_ph?: number | null
+          min_moisture?: number | null
+          min_nitrogen?: number | null
+          min_ph?: number | null
+          period_end: string
+          period_start: string
+          total_readings?: number
+          user_id: string
+        }
+        Update: {
+          aggregation_type?: string
+          avg_moisture?: number
+          avg_nitrogen?: number
+          avg_ph?: number
+          avg_temperature?: number | null
+          created_at?: string
+          id?: string
+          max_moisture?: number | null
+          max_nitrogen?: number | null
+          max_ph?: number | null
+          min_moisture?: number | null
+          min_nitrogen?: number | null
+          min_ph?: number | null
+          period_end?: string
+          period_start?: string
+          total_readings?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      locations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      soil_readings: {
+        Row: {
+          created_at: string
+          id: string
+          location_id: string
+          moisture: number
+          nitrogen: number
+          ph: number
+          plant_type: string | null
+          reading_date: string
+          temperature: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location_id: string
+          moisture: number
+          nitrogen: number
+          ph: number
+          plant_type?: string | null
+          reading_date?: string
+          temperature?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location_id?: string
+          moisture?: number
+          nitrogen?: number
+          ph?: number
+          plant_type?: string | null
+          reading_date?: string
+          temperature?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "soil_readings_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      aggregate_soil_data: {
+        Args: {
+          p_aggregation_type: string
+          p_period_end: string
+          p_period_start: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
