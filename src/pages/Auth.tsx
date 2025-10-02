@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Leaf, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -17,6 +18,8 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -77,6 +80,29 @@ const Auth = () => {
         toast.error(error.message);
       } else {
         toast.success("Account created successfully! Please check your email to confirm your account.");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
+        redirectTo: `${window.location.origin}/`,
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Password reset link sent! Please check your email.");
+        setShowForgotPassword(false);
+        setForgotPasswordEmail("");
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
@@ -151,6 +177,44 @@ const Auth = () => {
                       )}
                     </Button>
                   </div>
+                </div>
+                
+                <div className="flex justify-end">
+                  <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+                    <DialogTrigger asChild>
+                      <Button type="button" variant="link" className="px-0 text-sm">
+                        Forgot password?
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Reset Password</DialogTitle>
+                        <DialogDescription>
+                          Enter your email address and we'll send you a link to reset your password.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleForgotPassword} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="forgot-email">Email</Label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                              id="forgot-email"
+                              type="email"
+                              placeholder="Enter your email"
+                              value={forgotPasswordEmail}
+                              onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                              className="pl-10"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? "Sending..." : "Send Reset Link"}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                 </div>
                 
                 <Button type="submit" className="w-full" disabled={loading}>
