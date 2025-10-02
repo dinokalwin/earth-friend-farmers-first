@@ -143,12 +143,8 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="max-w-md mx-auto p-4">
-        <Tabs defaultValue="locations" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 mb-6">
-            <TabsTrigger value="locations" className="flex flex-col gap-1 py-3">
-              <MapPin className="h-4 w-4" />
-              <span className="text-xs">Locations</span>
-            </TabsTrigger>
+        <Tabs defaultValue="input" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 mb-6">
             <TabsTrigger value="input" className="flex flex-col gap-1 py-3">
               <Leaf className="h-4 w-4" />
               <span className="text-xs">{t.tabs.input}</span>
@@ -171,16 +167,8 @@ const Index = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="locations">
-            <LocationManager 
-              onLocationSelect={setSelectedLocationId}
-              selectedLocationId={selectedLocationId}
-            />
-          </TabsContent>
-
           <TabsContent value="input">
             <EnhancedSoilDataForm 
-              selectedLocationId={selectedLocationId}
               onDataAdded={handleDataAdded}
             />
           </TabsContent>
