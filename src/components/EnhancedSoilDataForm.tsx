@@ -14,7 +14,6 @@ interface LocationReading {
   ph: string;
   moisture: string;
   temperature: string;
-  plant_type: string;
 }
 
 interface EnhancedSoilDataFormProps {
@@ -23,13 +22,13 @@ interface EnhancedSoilDataFormProps {
 
 export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps) {
   const [numLocations, setNumLocations] = useState(3);
+  const [plantType, setPlantType] = useState("");
   const [readings, setReadings] = useState<LocationReading[]>(
     Array(3).fill(null).map(() => ({
       nitrogen: "",
       ph: "",
       moisture: "",
-      temperature: "",
-      plant_type: ""
+      temperature: ""
     }))
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,8 +43,7 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
         nitrogen: "",
         ph: "",
         moisture: "",
-        temperature: "",
-        plant_type: ""
+        temperature: ""
       }
     );
     setReadings(newReadings);
@@ -71,6 +69,12 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         toast.error("You must be logged in to submit data");
+        return;
+      }
+
+      // Validate plant type is selected
+      if (!plantType) {
+        toast.error("Please select a plant type");
         return;
       }
 
@@ -110,7 +114,7 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
         ph: parseFloat(reading.ph),
         moisture: parseFloat(reading.moisture),
         temperature: reading.temperature ? parseFloat(reading.temperature) : null,
-        plant_type: reading.plant_type || `Location ${index + 1}`,
+        plant_type: plantType,
         reading_date: new Date().toISOString()
       }));
 
@@ -143,12 +147,12 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
       );
 
       // Reset form
+      setPlantType("");
       setReadings(Array(numLocations).fill(null).map(() => ({
         nitrogen: "",
         ph: "",
         moisture: "",
-        temperature: "",
-        plant_type: ""
+        temperature: ""
       })));
       
       onDataAdded();
@@ -173,6 +177,27 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="plant_type">Plant/Crop Type *</Label>
+            <Select value={plantType} onValueChange={setPlantType}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select plant type" />
+              </SelectTrigger>
+              <SelectContent className="bg-background z-50">
+                <SelectItem value="rice">Rice</SelectItem>
+                <SelectItem value="wheat">Wheat</SelectItem>
+                <SelectItem value="corn">Corn</SelectItem>
+                <SelectItem value="tomato">Tomato</SelectItem>
+                <SelectItem value="potato">Potato</SelectItem>
+                <SelectItem value="cotton">Cotton</SelectItem>
+                <SelectItem value="sugarcane">Sugarcane</SelectItem>
+                <SelectItem value="beans">Beans</SelectItem>
+                <SelectItem value="spinach">Spinach</SelectItem>
+                <SelectItem value="cabbage">Cabbage</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="numLocations">Number of Field Locations</Label>
             <Input
@@ -264,29 +289,6 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
                     />
                   </div>
 
-                  <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor={`plant_type-${index}`}>Plant Type</Label>
-                    <Select
-                      value={reading.plant_type}
-                      onValueChange={(value) => updateReading(index, 'plant_type', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select plant type (optional)" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="tomato">Tomato</SelectItem>
-                        <SelectItem value="corn">Corn</SelectItem>
-                        <SelectItem value="wheat">Wheat</SelectItem>
-                        <SelectItem value="potato">Potato</SelectItem>
-                        <SelectItem value="carrot">Carrot</SelectItem>
-                        <SelectItem value="lettuce">Lettuce</SelectItem>
-                        <SelectItem value="beans">Beans</SelectItem>
-                        <SelectItem value="rice">Rice</SelectItem>
-                        <SelectItem value="soybean">Soybean</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </div>
               </div>
             ))}
@@ -297,7 +299,7 @@ export function EnhancedSoilDataForm({ onDataAdded }: EnhancedSoilDataFormProps)
               {isSubmitting ? "Processing Data..." : "Submit All Readings & Get Results"}
             </Button>
             <p className="text-sm text-muted-foreground text-center">
-              * Required fields: Nitrogen, pH, and Moisture
+              * Required fields: Plant type, Nitrogen, pH, and Moisture
             </p>
           </div>
         </form>
