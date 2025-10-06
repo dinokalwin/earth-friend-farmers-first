@@ -86,8 +86,29 @@ const Index = () => {
     toast.success(t.messages.dataRecorded);
   };
 
-  const getLatestSoilData = (): SoilData | null => {
-    return soilData.length > 0 ? soilData[0] : null;
+  const getAggregatedSoilData = (): SoilData | null => {
+    if (soilData.length === 0) return null;
+    
+    // Calculate aggregated data from all readings
+    const avgNitrogen = soilData.reduce((sum, d) => sum + d.nitrogen, 0) / soilData.length;
+    const avgPH = soilData.reduce((sum, d) => sum + d.ph, 0) / soilData.length;
+    const avgMoisture = soilData.reduce((sum, d) => sum + d.moisture, 0) / soilData.length;
+    
+    // Use the most common plant type or the latest
+    const plantCounts: Record<string, number> = {};
+    soilData.forEach(d => {
+      plantCounts[d.plant] = (plantCounts[d.plant] || 0) + 1;
+    });
+    const mostCommonPlant = Object.entries(plantCounts).sort((a, b) => b[1] - a[1])[0][0];
+    
+    return {
+      id: 'aggregated',
+      date: new Date().toISOString(),
+      nitrogen: Number(avgNitrogen.toFixed(2)),
+      ph: Number(avgPH.toFixed(2)),
+      moisture: Number(avgMoisture.toFixed(2)),
+      plant: mostCommonPlant
+    };
   };
 
   const handleSignOut = async () => {
@@ -181,7 +202,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="recommendations">
-            <RecommendationsPanel latestSoilData={getLatestSoilData()} t={t} />
+            <RecommendationsPanel latestSoilData={getAggregatedSoilData()} t={t} />
           </TabsContent>
 
           <TabsContent value="weather">
