@@ -1,19 +1,15 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { LocationManager } from "@/components/LocationManager";
-import { EnhancedSoilDataForm } from "@/components/EnhancedSoilDataForm";
-import { EnhancedDashboard } from "@/components/EnhancedDashboard";
+import { SoilDataForm } from "@/components/SoilDataForm";
+import { Dashboard } from "@/components/Dashboard";
 import { WeatherWidget } from "@/components/WeatherWidget";
 import { RecommendationsPanel } from "@/components/RecommendationsPanel";
 import { ReportGenerator } from "@/components/ReportGenerator";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Leaf, BarChart3, Lightbulb, Cloud, FileText, LogOut, MapPin } from "lucide-react";
+import { Leaf, BarChart3, Lightbulb, Cloud, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useAuth } from "@/hooks/useAuth";
 
 export interface SoilData {
   id: string;
@@ -32,21 +28,10 @@ export interface WeatherData {
 }
 
 const Index = () => {
-  const navigate = useNavigate();
-  const { user, loading, signOut } = useAuth();
   const { language, t, switchLanguage } = useLanguage();
   const [soilData, setSoilData] = useState<SoilData[]>([]);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [selectedLocationId, setSelectedLocationId] = useState<string>('');
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  // Redirect to auth if not logged in
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate("/auth");
-    }
-  }, [user, loading, navigate]);
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -81,57 +66,20 @@ const Index = () => {
     };
   }, []);
 
-  const handleDataAdded = () => {
-    setRefreshTrigger(prev => prev + 1);
+  const handleAddSoilData = (newData: Omit<SoilData, 'id' | 'date'>) => {
+    const soilEntry: SoilData = {
+      ...newData,
+      id: Date.now().toString(),
+      date: new Date().toISOString()
+    };
+    
+    setSoilData(prev => [soilEntry, ...prev]);
     toast.success(t.messages.dataRecorded);
   };
 
-  const getAggregatedSoilData = (): SoilData | null => {
-    if (soilData.length === 0) return null;
-    
-    // Calculate aggregated data from all readings
-    const avgNitrogen = soilData.reduce((sum, d) => sum + d.nitrogen, 0) / soilData.length;
-    const avgPH = soilData.reduce((sum, d) => sum + d.ph, 0) / soilData.length;
-    const avgMoisture = soilData.reduce((sum, d) => sum + d.moisture, 0) / soilData.length;
-    
-    // Use the most common plant type or the latest
-    const plantCounts: Record<string, number> = {};
-    soilData.forEach(d => {
-      plantCounts[d.plant] = (plantCounts[d.plant] || 0) + 1;
-    });
-    const mostCommonPlant = Object.entries(plantCounts).sort((a, b) => b[1] - a[1])[0][0];
-    
-    return {
-      id: 'aggregated',
-      date: new Date().toISOString(),
-      nitrogen: Number(avgNitrogen.toFixed(2)),
-      ph: Number(avgPH.toFixed(2)),
-      moisture: Number(avgMoisture.toFixed(2)),
-      plant: mostCommonPlant
-    };
+  const getLatestSoilData = (): SoilData | null => {
+    return soilData.length > 0 ? soilData[0] : null;
   };
-
-  const handleSignOut = async () => {
-    await signOut();
-    toast.success("Signed out successfully");
-  };
-
-  // Show loading spinner while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex items-center gap-2">
-          <Leaf className="h-6 w-6 animate-pulse text-primary" />
-          <span className="text-lg">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  // Don't render anything if not authenticated (will redirect)
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -150,14 +98,6 @@ const Index = () => {
             />
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-red-400'}`} />
             <span className="text-sm">{isOnline ? t.header.online : t.header.offline}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleSignOut}
-              className="text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </header>
@@ -189,20 +129,15 @@ const Index = () => {
           </TabsList>
 
           <TabsContent value="input">
-            <EnhancedSoilDataForm 
-              onDataAdded={handleDataAdded}
-            />
+            <SoilDataForm onSubmit={handleAddSoilData} t={t} />
           </TabsContent>
 
           <TabsContent value="dashboard">
-            <EnhancedDashboard 
-              selectedLocationId={selectedLocationId}
-              key={refreshTrigger}
-            />
+            <Dashboard soilData={soilData} t={t} />
           </TabsContent>
 
           <TabsContent value="recommendations">
-            <RecommendationsPanel latestSoilData={getAggregatedSoilData()} t={t} />
+            <RecommendationsPanel latestSoilData={getLatestSoilData()} t={t} />
           </TabsContent>
 
           <TabsContent value="weather">

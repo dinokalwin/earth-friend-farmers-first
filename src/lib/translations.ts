@@ -37,23 +37,8 @@ export interface Translations {
     title: string;
     noData: string;
     fertilizerRecommendations: string;
-    pestManagement: string;
     cropSuggestions: string;
     general: string;
-    soilHealthStatus: string;
-    optimalFor: string;
-    recommendedFertilizers: string;
-    generalTips: string;
-    lowNitrogen: string;
-    excessNitrogen: string;
-    soilAcidic: string;
-    soilAlkaline: string;
-    lowMoisture: string;
-    excessMoisture: string;
-    nitrogenOptimal: string;
-    phOptimal: string;
-    moistureOptimal: string;
-    basedOnLatest: string;
   };
   weather: {
     title: string;
@@ -133,23 +118,8 @@ export const translations: Record<Language, Translations> = {
       title: 'Smart Recommendations',
       noData: 'Record soil data to get personalized recommendations.',
       fertilizerRecommendations: 'Fertilizer Recommendations',
-      pestManagement: 'Pest Management',
       cropSuggestions: 'Crop Suggestions',
       general: 'General Tips',
-      soilHealthStatus: 'Soil Health Status',
-      optimalFor: 'optimal for',
-      recommendedFertilizers: 'Recommended Fertilizers for',
-      generalTips: 'General Tips for',
-      lowNitrogen: 'Low nitrogen for',
-      excessNitrogen: 'Excess nitrogen for',
-      soilAcidic: 'Soil too acidic for',
-      soilAlkaline: 'Soil too alkaline for',
-      lowMoisture: 'Insufficient moisture for',
-      excessMoisture: 'Excessive moisture for',
-      nitrogenOptimal: 'Nitrogen levels optimal for',
-      phOptimal: 'pH levels optimal for',
-      moistureOptimal: 'Moisture levels optimal for',
-      basedOnLatest: 'Based on your latest soil readings',
     },
     weather: {
       title: 'Weather Information',
@@ -227,23 +197,8 @@ export const translations: Record<Language, Translations> = {
       title: 'ஸ்மார்ட் பரிந்துரைகள்',
       noData: 'தனிப்பயனாக்கப்பட்ட பரிந்துரைகளைப் பெற மண் தரவைப் பதிவு செய்யவும்.',
       fertilizerRecommendations: 'உர பரிந்துரைகள்',
-      pestManagement: 'பூச்சி மேலாண்மை',
       cropSuggestions: 'பயிர் பரிந்துரைகள்',
       general: 'பொதுவான குறிப்புகள்',
-      soilHealthStatus: 'மண் சுகாதார நிலை',
-      optimalFor: 'க்கு உகந்தது',
-      recommendedFertilizers: 'பரிந்துரைக்கப்பட்ட உரங்கள்',
-      generalTips: 'பொதுவான குறிப்புகள்',
-      lowNitrogen: 'குறைந்த நைட்ரஜன்',
-      excessNitrogen: 'அதிகமான நைட்ரஜன்',
-      soilAcidic: 'மண் மிகவும் அமிலத்தன்மை',
-      soilAlkaline: 'மண் மிகவும் கார',
-      lowMoisture: 'போதுமான ஈரப்பதம் இல்லை',
-      excessMoisture: 'அதிகமான ஈரப்பதம்',
-      nitrogenOptimal: 'நைட்ரஜன் அளவு உகந்தது',
-      phOptimal: 'பிஎச் அளவு உகந்தது',
-      moistureOptimal: 'ஈரப்பத அளவு உகந்தது',
-      basedOnLatest: 'உங்கள் சமீபத்திய மண் அளவீடுகளின் அடிப்படையில்',
     },
     weather: {
       title: 'வானிலை தகவல்',
